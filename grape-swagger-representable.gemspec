@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'grape-swagger', '>= 0.31.0'
   s.add_runtime_dependency 'representable'
 
-  s.add_development_dependency 'bundler', '~> 1.12'
+  s.add_development_dependency 'bundler'
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'pry' unless RUBY_PLATFORM.eql?('java') || RUBY_ENGINE.eql?('rbx')
   s.add_development_dependency 'pry-byebug' unless RUBY_PLATFORM.eql?('java') || RUBY_ENGINE.eql?('rbx')
