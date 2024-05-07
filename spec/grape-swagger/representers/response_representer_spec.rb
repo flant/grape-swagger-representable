@@ -97,7 +97,7 @@ describe 'responseModel' do
         'description' => 'OK',
         'schema' => {
           'type' => 'array',
-          'items' => { '$ref' => '#/definitions/Something' }
+          'items' => { '$ref' => '#/definitions/ThisApi_Representers_Something' }
         }
       }
     )
@@ -105,12 +105,20 @@ describe 'responseModel' do
 
   it 'should document specified models with hidden property' do
     allow(ThisApi::Representers::Error).to receive(:developer?).and_return(true)
-    expect(subject['definitions']['Error']).to eq(
+    expect(subject['definitions']['ThisApi_Representers_Error']).to eq(
       'type' => 'object',
-      'description' => 'This returns something',
-      'properties' => { 'code' =>    { 'description' => 'Error code', 'type' => 'string' },
-                        'message' => { 'description' => 'Error message', 'type' => 'string' },
-                        'developer_message' => { 'description' => 'Developer hidden error message', 'type' => 'string' } }
+      'description' => 'ThisApi_Representers_Error model',
+      'properties' => {
+        'code' => {
+          'description' => 'Error code', 'type' => 'string'
+        },
+        'message' => {
+          'description' => 'Error message', 'type' => 'string'
+        },
+        'developer_message' => {
+          'description' => 'Developer hidden error message', 'type' => 'string'
+        }
+      }
     )
   end
 
@@ -118,46 +126,57 @@ describe 'responseModel' do
     expect(subject['paths']['/something/{id}']['get']['responses']).to eq(
       '200' => {
         'description' => 'OK',
-        'schema' => { '$ref' => '#/definitions/Something' }
+        'schema' => { '$ref' => '#/definitions/ThisApi_Representers_Something' }
       },
       '403' => {
         'description' => 'Refused to return something',
-        'schema' => { '$ref' => '#/definitions/Error' }
+        'schema' => { '$ref' => '#/definitions/ThisApi_Representers_Error' }
       }
     )
-    expect(subject['definitions'].keys).to include 'Error'
-    expect(subject['definitions']['Error']).to eq(
+    expect(subject['definitions'].keys).to include 'ThisApi_Representers_Error'
+    expect(subject['definitions']['ThisApi_Representers_Error']).to eq(
       'type' => 'object',
-      'description' => 'This returns something',
+      'description' => 'ThisApi_Representers_Error model',
       'properties' => { 'code' => { 'description' => 'Error code', 'type' => 'string' }, 'message' => { 'description' => 'Error message', 'type' => 'string' } }
     )
 
-    expect(subject['definitions'].keys).to include 'Something'
-    expect(subject['definitions']['Something']).to eq(
+    expect(subject['definitions'].keys).to include 'ThisApi_Representers_Something'
+    expect(subject['definitions']['ThisApi_Representers_Something']).to eq(
       'type' => 'object',
-      'description' => 'This returns something',
-      'properties' =>
-          { 'text' => { 'type' => 'string', 'description' => 'Content of something.' },
-            'alias' => { 'type' => 'string', 'description' => 'Aliased.' },
-            'kind' => { '$ref' => '#/definitions/Kind', 'description' => 'The kind of this something.' },
-            'kind2' => { '$ref' => '#/definitions/Kind', 'description' => 'Secondary kind.' },
-            'kind3' => { '$ref' => '#/definitions/Kind', 'description' => 'Tertiary kind.' },
-            'tags' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/Tag' }, 'description' => 'Tags.' },
-            'relation' => { '$ref' => '#/definitions/Relation', 'description' => 'A related model.' } }
+      'description' => 'ThisApi_Representers_Something model',
+      'properties' => {
+        'text' => { 'type' => 'string', 'description' => 'Content of something.' },
+        'alias' => { 'type' => 'string', 'description' => 'Aliased.' },
+        'kind' => {
+          '$ref' => '#/definitions/ThisApi_Representers_Kind',
+          'description' => 'The kind of this something.'
+        },
+        'kind2' => { '$ref' => '#/definitions/ThisApi_Representers_Kind', 'description' => 'Secondary kind.' },
+        'kind3' => { '$ref' => '#/definitions/ThisApi_Representers_Kind', 'description' => 'Tertiary kind.' },
+        'tags' => {
+          'type' => 'array',
+          'items' => { '$ref' => '#/definitions/ThisApi_Representers_Tag' },
+          'description' => 'Tags.'
+        },
+        'relation' => {
+          '$ref' => '#/definitions/ThisApi_Representers_Relation',
+          'description' => 'A related model.'
+        }
+      }
     )
 
-    expect(subject['definitions'].keys).to include 'Kind'
-    expect(subject['definitions']['Kind']).to eq(
+    expect(subject['definitions'].keys).to include 'ThisApi_Representers_Kind'
+    expect(subject['definitions']['ThisApi_Representers_Kind']).to eq(
       'type' => 'object', 'properties' => { 'title' => { 'type' => 'string', 'description' => 'Title of the kind.', 'example' => 123 } }
     )
 
-    expect(subject['definitions'].keys).to include 'Relation'
-    expect(subject['definitions']['Relation']).to eq(
+    expect(subject['definitions'].keys).to include 'ThisApi_Representers_Relation'
+    expect(subject['definitions']['ThisApi_Representers_Relation']).to eq(
       'type' => 'object', 'properties' => { 'name' => { 'type' => 'string', 'description' => 'Name', 'example' => 'A relation' } }
     )
 
-    expect(subject['definitions'].keys).to include 'Tag'
-    expect(subject['definitions']['Tag']).to eq(
+    expect(subject['definitions'].keys).to include 'ThisApi_Representers_Tag'
+    expect(subject['definitions']['ThisApi_Representers_Tag']).to eq(
       'type' => 'object', 'properties' => { 'name' => { 'type' => 'string', 'description' => 'Name' } }
     )
   end
@@ -223,20 +242,55 @@ describe 'should build definition from given entity' do
 
   it 'it prefer entity over others' do
     expect(subject['definitions']).to eql(
-      'Kind' => { 'type' => 'object', 'properties' => { 'id' => { 'description' => 'Title of the kind.', 'type' => 'integer', 'format' => 'int32' } } },
-      'Tag' => { 'type' => 'object', 'properties' => { 'name' => { 'description' => 'Name', 'type' => 'string' } } },
-      'Relation' => { 'type' => 'object', 'properties' => { 'name' => { 'description' => 'Name', 'type' => 'string' } } },
-      'SomeEntity' => {
+      'TheseApi_Representers_Kind' => {
+        'type' => 'object',
+        'properties' => {
+          'id' => {
+            'description' => 'Title of the kind.',
+            'type' => 'integer',
+            'format' => 'int32'
+          }
+        }
+      },
+      'TheseApi_Representers_Tag' => {
+        'type' => 'object',
+        'properties' => {
+          'name' => {
+            'description' => 'Name',
+            'type' => 'string'
+          }
+        }
+      },
+      'TheseApi_Representers_Relation' => {
+        'type' => 'object',
+        'properties' => {
+          'name' => {
+            'description' => 'Name',
+            'type' => 'string'
+          }
+        }
+      },
+      'TheseApi_Representers_SomeEntity' => {
         'type' => 'object',
         'properties' => {
           'text' => { 'description' => 'Content of something.', 'type' => 'string' },
-          'kind' => { '$ref' => '#/definitions/Kind', 'description' => 'The kind of this something.' },
-          'kind2' => { '$ref' => '#/definitions/Kind', 'description' => 'Secondary kind.' },
-          'kind3' => { '$ref' => '#/definitions/Kind', 'description' => 'Tertiary kind.' },
-          'tags' => { 'type' => 'array', 'items' => { '$ref' => '#/definitions/Tag' }, 'description' => 'Tags.' },
-          'relation' => { '$ref' => '#/definitions/Relation', 'description' => 'A related model.' }
+          'kind' => {
+            '$ref' => '#/definitions/TheseApi_Representers_Kind',
+            'description' => 'The kind of this something.'
+          },
+          'kind2' => { '$ref' => '#/definitions/TheseApi_Representers_Kind', 'description' => 'Secondary kind.' },
+          'kind3' => { '$ref' => '#/definitions/TheseApi_Representers_Kind', 'description' => 'Tertiary kind.' },
+          'tags' => {
+            'type' => 'array',
+            'items' => { '$ref' => '#/definitions/TheseApi_Representers_Tag' },
+            'description' => 'Tags.'
+          },
+          'relation' => {
+            '$ref' => '#/definitions/TheseApi_Representers_Relation',
+            'description' => 'A related model.'
+          }
         },
-        'description' => 'This returns something'
+        'description' => 'TheseApi_Representers_SomeEntity model'
       }
     )
   end
