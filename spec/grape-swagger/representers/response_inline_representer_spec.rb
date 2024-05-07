@@ -48,7 +48,7 @@ describe 'responseInlineModel' do
              is_array: true,
              http_codes: [{ code: 200, message: 'OK', model: Representers::Something }]
         get '/something' do
-          something = OpenStruct.new text: 'something'
+          something = Struct.new('Something', :text).new('something')
           Representers::Something.new(something).to_hash
         end
 
@@ -64,10 +64,10 @@ describe 'responseInlineModel' do
         end
         get '/something/:id' do
           if params[:id] == 1
-            something = OpenStruct.new text: 'something'
+            something = Struct.new('Something', :text).new('something')
             Representers::Something.new(something).to_hash
           else
-            error = OpenStruct.new code: 'some_error', message: 'Some error'
+            error = Struct.new('SomeError', :code, :message).new('some_error', 'Some error')
             Representers::Error.new(error).to_hash
           end
         end
