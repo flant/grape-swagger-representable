@@ -8,7 +8,7 @@ inherit_from: .rubocop_todo.yml
 Layout/EmptyLinesAroundArguments:
   Enabled: false
 
-Layout/IndentHash:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 Metrics/BlockLength:
