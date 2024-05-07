@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
   s.require_paths = ['lib']
 
-  s.add_runtime_dependency 'grape-swagger', '>= 0.31.0'
-  s.add_runtime_dependency 'representable'
+  s.add_runtime_dependency 'grape-swagger', '~> 2.0'
+  s.add_runtime_dependency 'representable', '~> 3.2'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'multi_json'
