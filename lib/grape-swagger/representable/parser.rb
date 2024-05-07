@@ -3,8 +3,7 @@
 module GrapeSwagger
   module Representable
     class Parser
-      attr_reader :model
-      attr_reader :endpoint
+      attr_reader :model, :endpoint
 
       def initialize(model, endpoint)
         @model = model
@@ -61,7 +60,9 @@ module GrapeSwagger
         end
       end
 
-      def representer_mapping(representer, documentation, property, is_a_collection = false, is_a_decorator = false, nested = nil)
+      def representer_mapping(
+        representer, documentation, property, is_a_collection = false, is_a_decorator = false, nested = nil
+      )
         if nested.nil? && is_a_decorator
           name = endpoint.send(:expose_params_from_model, representer)
 
@@ -105,7 +106,9 @@ module GrapeSwagger
         properties = representer.map.each_with_object({}) do |value, property|
           property_name = value[:as].try(:call) || value.name
           hidden_property = value[:documentation]&.[](:hidden)
+
           next if hidden_property && (hidden_property.is_a?(Proc) ? hidden_property.call : hidden_property)
+
           property[property_name] = parse_representer_property(value)
         end
 
@@ -125,15 +128,17 @@ module GrapeSwagger
 
         overrided = (attributes.keys & nested_attributes.keys)
 
-        final_required = (required + nested_required)
-                         .uniq
-                         .select { |k| (overrided.include?(k) && nested_required.include?(k)) || !overrided.include?(k) }
+        final_required =
+          (required + nested_required)
+            .uniq
+            .select { |k| (overrided.include?(k) && nested_required.include?(k)) || !overrided.include?(k) }
 
         [final_attributes, final_required]
       end
 
       def with_required(hash, required)
         return hash if required.empty?
+
         hash[:required] = required
         hash
       end
