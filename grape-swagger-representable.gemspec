@@ -21,16 +21,4 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'grape-swagger', '~> 2.0'
   s.add_runtime_dependency 'representable', '~> 3.2'
-
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'multi_json'
-  s.add_development_dependency 'pry' unless RUBY_PLATFORM.eql?('java') || RUBY_ENGINE.eql?('rbx')
-  s.add_development_dependency 'pry-byebug' unless RUBY_PLATFORM.eql?('java') || RUBY_ENGINE.eql?('rbx')
-  s.add_development_dependency 'rack-cors'
-  s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'redcarpet' unless RUBY_PLATFORM.eql?('java') || RUBY_ENGINE.eql?('rbx')
-  s.add_development_dependency 'rouge' unless RUBY_PLATFORM.eql?('java') || RUBY_ENGINE.eql?('rbx')
-  s.add_development_dependency 'rspec', '~> 3.0'
-  s.add_development_dependency 'rubocop', '~> 1.63.4'
 end
