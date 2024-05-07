@@ -11,6 +11,9 @@ Layout/EmptyLinesAroundArguments:
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Metrics/BlockLength:
   Exclude:
     - spec/**/*

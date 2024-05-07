@@ -112,9 +112,11 @@ module GrapeSwagger
           property[property_name] = parse_representer_property(value)
         end
 
-        required = representer.map
-                              .select { |value| value[:documentation] && value[:documentation][:required] }
-                              .map { |value| value[:as] || value.name }
+        required =
+          representer
+            .map
+            .select { |value| value[:documentation] && value[:documentation][:required] }
+            .map { |value| value[:as] || value.name }
 
         [properties, required]
       end
