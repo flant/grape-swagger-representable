@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
-
-require 'grape-swagger/representable'
+require_relative '../lib/grape-swagger/representable'
 require 'grape'
 require 'representable/json'
 
